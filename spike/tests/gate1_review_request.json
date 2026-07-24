@@ -1,0 +1,29 @@
+{
+  "model": "qwen3.5:4b",
+  "stream": false,
+  "think": false,
+  "format": {
+    "type": "object",
+    "properties": {
+      "restatement": {"type": "string"},
+      "blocking_issues": {"type": "array", "items": {"type": "string"}},
+      "decision": {"type": "string"},
+      "next_action": {"type": "string"}
+    },
+    "required": ["restatement", "blocking_issues", "decision", "next_action"]
+  },
+  "messages": [
+    {
+      "role": "system",
+      "content": "你是独立需求评审者，只评审下面的脱敏摘要，不执行命令，不虚构证据。"
+    },
+    {
+      "role": "user",
+      "content": "项目 code_coach 的 W1 原型面向会 C++、正在学习 Python 的学生。仓库内的 C++17 检测器读取代码文件，返回 C++、Python 或 unknown，并给出可信度、两类得分和判断依据；本地 AI 探针使用脱敏诊断验证教学解释能力。原型不执行输入代码，不支持其他语言，不提供网页或网络服务。W1 已定义 4 个用户故事及错误路径，并用三个受控样例验证语言检测。请复述原型、指出主要风险并给出 Gate 1 结论。"
+    }
+  ],
+  "options": {
+    "temperature": 0,
+    "num_predict": 320
+  }
+}

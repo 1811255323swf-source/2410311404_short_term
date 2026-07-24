@@ -1,0 +1,29 @@
+{
+  "model": "msd-2410311404-qwen3-4b-ms:latest",
+  "stream": false,
+  "think": false,
+  "format": {
+    "type": "object",
+    "properties": {
+      "summary": {"type": "string"},
+      "repair_order": {"type": "string"},
+      "concept_link": {"type": "string"},
+      "exercise": {"type": "string"}
+    },
+    "required": ["summary", "repair_order", "concept_link", "exercise"]
+  },
+  "messages": [
+    {
+      "role": "system",
+      "content": "你是 code_coach 的本地教学解释器。只根据确定性诊断解释，不声称执行过代码，不输出任何凭据。"
+    },
+    {
+      "role": "user",
+      "content": "语言检测结果为 cpp，规则 CPP-NULLPTR 在第 8 行发现 NULL。请用 JSON 返回 summary、repair_order、concept_link、exercise 四个字符串字段；concept_link 要说明 C++ nullptr 与 Python None 的边界差异。"
+    }
+  ],
+  "options": {
+    "temperature": 0,
+    "num_predict": 384
+  }
+}

@@ -1,0 +1,8 @@
+spike/tmp/
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.playwright-cli/
+output/
+data/*.db
