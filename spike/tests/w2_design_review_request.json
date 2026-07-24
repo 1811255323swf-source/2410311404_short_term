@@ -1,0 +1,38 @@
+{
+  "model": "qwen3.5:4b",
+  "stream": false,
+  "think": false,
+  "format": {
+    "type": "object",
+    "properties": {
+      "restatement": {"type": "string"},
+      "blocking_issues": {"type": "array", "maxItems": 2, "items": {"type": "string"}},
+      "overdesign_risks": {"type": "array", "maxItems": 2, "items": {"type": "string"}},
+      "contract_conflicts": {"type": "array", "maxItems": 2, "items": {"type": "string"}},
+      "recommended_changes": {"type": "array", "maxItems": 2, "items": {"type": "string"}},
+      "decision": {"type": "string"}
+    },
+    "required": [
+      "restatement",
+      "blocking_issues",
+      "overdesign_risks",
+      "contract_conflicts",
+      "recommended_changes",
+      "decision"
+    ]
+  },
+  "messages": [
+    {
+      "role": "system",
+      "content": "你是独立架构评审者。只评审给出的脱敏设计摘要，不执行代码，不虚构已读文件或测试结果。必须严格按给定 JSON Schema 输出；每个数组最多 2 项，每项不超过 40 个汉字，总输出不超过 300 个汉字。decision 只能是 PASS、MODIFIED_PASS 或 BLOCKED。"
+    },
+    {
+      "role": "user",
+      "content": "项目 code_coach 面向具备 C++ 基础、正在学习 Python 的学生。W1 已实现 C++17 语言特征检测器和三类受控样例。W2 增加 AI 教学输出合同校验器，并设计 InputGuard、LanguageDetector、StaticAnalyzer、AiCoach、ReviewService、ReviewRepository、Reporter 七个职责边界。ReviewService 是唯一编排入口；AI 不得修改检测结果、确定性问题或分数。模型响应必须包含 summary、repair_order、concept_links、exercises；合同失败最多修复重试一次，单次上限 20 秒，总预算 35 秒，失败后保留确定性结果并降级。ADR-001 选择确定性核心加可降级 AI 适配器，ADR-002 选择特征评分加本地安全语法探针。请检查 SPEC 追踪、模块依赖、状态变化、AI 失败路径、预算保护和测试策略，并给出 Gate 2 建议。"
+    }
+  ],
+  "options": {
+    "temperature": 0,
+    "num_predict": 384
+  }
+}
