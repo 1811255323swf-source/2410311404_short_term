@@ -5,4 +5,4 @@ __pycache__/
 .pytest_cache/
 .playwright-cli/
 output/
-data/*.db
+data/*.db*

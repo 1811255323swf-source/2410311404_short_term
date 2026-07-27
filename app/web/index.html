@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>code_coach · C++ → Python 学习助手</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">C++ → Python learning bridge</p>
+      <h1>code_coach</h1>
+      <p class="hero-summary">
+        粘贴代码，自动识别语言，先给出可复现的静态诊断，再用可降级 AI 连接两种语言的概念。
+      </p>
+    </div>
+    <div class="safety-note">
+      <span class="signal"></span>
+      永不执行你的代码
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="editor-panel">
+      <div class="section-heading">
+        <div>
+          <p class="step">01 · INPUT</p>
+          <h2>提交学习样例</h2>
+        </div>
+        <div class="example-actions">
+          <button class="text-button" data-example="cpp">C++ 示例</button>
+          <button class="text-button" data-example="python">Python 示例</button>
+        </div>
+      </div>
+
+      <label for="source-code">代码</label>
+      <textarea id="source-code" spellcheck="false" placeholder="在这里粘贴完整的 C++ 或 Python 代码"></textarea>
+
+      <label for="learning-goal">学习目标（可选）</label>
+      <input id="learning-goal" type="text" maxlength="200" placeholder="例如：理解 nullptr 与 None 的区别">
+
+      <div class="submit-row">
+        <label class="check-label">
+          <input id="request-ai" type="checkbox" checked>
+          生成 AI 教学解释
+        </label>
+        <button id="analyze-button" class="primary-button">开始评审</button>
+      </div>
+      <p id="status-message" class="status-message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="result-panel" aria-live="polite">
+      <div class="section-heading">
+        <div>
+          <p class="step">02 · REVIEW</p>
+          <h2>学习反馈</h2>
+        </div>
+        <a id="report-link" class="text-button disabled" href="#" aria-disabled="true">下载报告</a>
+      </div>
+
+      <div class="metrics">
+        <div>
+          <span>检测语言</span>
+          <strong id="metric-language">—</strong>
+        </div>
+        <div>
+          <span>可信度</span>
+          <strong id="metric-confidence">—</strong>
+        </div>
+        <div>
+          <span>确定性分数</span>
+          <strong id="metric-score">—</strong>
+        </div>
+        <div>
+          <span>AI 状态</span>
+          <strong id="metric-ai">—</strong>
+        </div>
+      </div>
+
+      <div class="result-block">
+        <h3>静态问题</h3>
+        <ul id="issue-list" class="issue-list">
+          <li class="empty-state">提交代码后显示可复现的问题。</li>
+        </ul>
+      </div>
+
+      <div class="result-block">
+        <h3>AI 教学解释</h3>
+        <div id="coaching-output" class="coaching-output empty-state">
+          AI 不参与静态事实和分数；离线时仍保留确定性结果。
+        </div>
+      </div>
+
+      <div id="revision-panel" class="revision-panel hidden">
+        <p class="step">03 · COMPARE</p>
+        <h3>提交修改版</h3>
+        <textarea id="revision-code" spellcheck="false" placeholder="粘贴修改后的同语言代码"></textarea>
+        <button id="compare-button" class="secondary-button">比较修改</button>
+        <p id="comparison-output" class="comparison-output"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>本地运行 · SQLite 仅保存哈希与问题快照</span>
+    <span>Delivery 2410311404-code-coach</span>
+  </footer>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

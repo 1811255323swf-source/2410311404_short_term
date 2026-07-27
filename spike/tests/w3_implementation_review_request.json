@@ -1,0 +1,20 @@
+{
+  "model": "qwen3.5:4b",
+  "stream": false,
+  "think": false,
+  "format": "json",
+  "messages": [
+    {
+      "role": "system",
+      "content": "你是独立代码审查者。只审查给出的脱敏实现摘要，不虚构已读源码，不执行代码。请返回简短 JSON，字段固定为 blocking_issues、privacy_security、test_gaps、decision；前三个字段均为最多 2 项的字符串数组，decision 只能是 PASS、MODIFIED_PASS 或 BLOCKED。"
+    },
+    {
+      "role": "user",
+      "content": "code_coach 是本地 C++ 到 Python 学习助手。W3 实现使用 FastAPI、SQLite、Python AST 和 g++ -fsyntax-only。主链路为 review、compare、Markdown report 和本地网页。系统不执行用户代码；SQLite 保存代码 SHA-256、评审元数据、问题快照、分数、AI 状态、教学结果和修订差异，不设置源码列。确定性静态问题和分数不允许 AI 修改。自动测试使用 deterministic mock；可选 Ollama 最多两次尝试、单次 20 秒、总预算 35 秒，失败降级。当前模型请求在首次尝试中包含完整源码，敏感代码命中规则时阻断调用，但学习目标尚未执行同类预检。现有测试覆盖 C++/Python/unknown 语言识别、强特征语法错误路由、不执行代码、双语言规则、评分、比较、合同重试、敏感预扫、源码不落库、API 主路径和错误路径、20 样例分类语料。复审前统一 pytest 共 45 项通过。请重点查找阻塞性实现问题、隐私安全问题和测试缺口，并给出进入下一阶段前的建议。"
+    }
+  ],
+  "options": {
+    "temperature": 0,
+    "num_predict": 384
+  }
+}
