@@ -27,15 +27,6 @@ for file in "${required_files[@]}"; do
   }
 done
 
-if find . -type f -iname 'README*' \
-  -not -path './.git/*' \
-  -not -path './.venv/*' \
-  -not -path './.pytest_cache/*' \
-  -print -quit | grep -q .; then
-  echo "W2_ROOT_DOCUMENT_CHECK=FAIL"
-  exit 1
-fi
-
 python3 - <<'PY'
 import re
 from pathlib import Path

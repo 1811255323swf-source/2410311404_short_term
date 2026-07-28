@@ -15,3 +15,9 @@ W1 完成 PRD、SPEC、4 个用户故事及 10 条“操作 -> 预期输出”�
 ## 阶段结论
 
 需求范围、验收标准和技术边界已稳定，可进入最小纵切面实现与测试阶段。
+
+## 材料与证据索引
+
+- 交付材料：[第 2 次周志](2410311404-code-coach-weekly-2.md)、[最终报告](2410311404-code-coach-final-report.md)、[答辩 PPT](2410311404-code-coach-defense.pptx)
+- 阶段证据：[Gate 1 评审](../process/gate/2410311404-code-coach-gate-1-prd-spec.md)、[AI 能力探针](../evidence/2410311404-code-coach-w1-ai-spike.md)、[语言检测探针](../evidence/2410311404-code-coach-w1-detector-spike.md)、[Gate 2 评审](../process/gate/2410311404-code-coach-gate-2-design.md)
+- 复现入口：[README](../README.md)

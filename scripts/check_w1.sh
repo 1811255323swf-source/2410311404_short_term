@@ -5,6 +5,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT}"
 
 required_files=(
+  README.md
   .gitignore
   roles.md
   docs/PRD.md
@@ -31,14 +32,20 @@ for file in "${required_files[@]}"; do
   }
 done
 
-if find . -type f -iname 'README*' \
-  -not -path './.git/*' \
-  -not -path './.venv/*' \
-  -not -path './.pytest_cache/*' \
-  -print -quit | grep -q .; then
-  echo "W1_README_CHECK=FAIL"
-  exit 1
-fi
+for marker in \
+  "## 本地运行" \
+  "## 项目验证" \
+  "## 验收操作" \
+  "submissions/2410311404-code-coach-weekly-1.md" \
+  "submissions/2410311404-code-coach-weekly-2.md" \
+  "submissions/2410311404-code-coach-final-report.md" \
+  "submissions/2410311404-code-coach-defense.pptx"; do
+  rg -F "${marker}" README.md >/dev/null || {
+    echo "W1_README_CHECK=FAIL marker=${marker}"
+    exit 1
+  }
+done
+echo "W1_README_CHECK=PASS"
 
 python3 - <<'PY'
 import re

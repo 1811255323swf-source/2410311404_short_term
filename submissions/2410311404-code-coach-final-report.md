@@ -4,6 +4,13 @@
 - 项目名称：`code_coach`
 - 交付状态：Gate 3 `MODIFIED_PASS`
 
+## 交付导航
+
+- [第 1 次周志](2410311404-code-coach-weekly-1.md)
+- [第 2 次周志](2410311404-code-coach-weekly-2.md)
+- [答辩 PPT](2410311404-code-coach-defense.pptx)
+- [README 复现入口](../README.md)
+
 ## 1. 项目说明
 
 `code_coach` 是面向正在从 C++ 过渡到 Python 的学生的 AI 原生代码学习系统。
@@ -31,13 +38,13 @@
 
 ## 3. 需求、规格与设计追踪
 
-- PRD：`docs/PRD.md`，包含 4 个用户故事、成功指标、错误路径和非目标。
-- SPEC：`docs/SPEC.md`，把故事拆成 DET、AI、SEC 契约和 10 条“操作 ->
+- PRD：[docs/PRD.md](../docs/PRD.md)，包含 4 个用户故事、成功指标、错误路径和非目标。
+- SPEC：[docs/SPEC.md](../docs/SPEC.md)，把故事拆成 DET、AI、SEC 契约和 10 条“操作 ->
   预期输出”验收标准。
-- DESIGN：`docs/DESIGN.md`，定义检测器、分析器、应用服务、AI 适配器、存储、
+- DESIGN：[docs/DESIGN.md](../docs/DESIGN.md)，定义检测器、分析器、应用服务、AI 适配器、存储、
   报告和 Web 边界。
-- ADR-001：确定性核心是事实来源，AI 只能解释，不能改写问题或分数。
-- ADR-002：语言检测采用特征评分与安全语法探针；C++ 探针使用临时目录、参数
+- [ADR-001](../docs/adr/ADR-001-deterministic-core-ai-adapter.md)：确定性核心是事实来源，AI 只能解释，不能改写问题或分数。
+- [ADR-002](../docs/adr/ADR-002-hybrid-safe-language-detection.md)：语言检测采用特征评分与安全语法探针；C++ 探针使用临时目录、参数
   数组、仅语法检查、墙钟超时和本地资源限制。
 
 从 PRD 到测试的追踪路径为：
@@ -75,16 +82,16 @@ FastAPI 提供评审、修改比较和 Markdown 报告接口。单页 Web 界面
 ## 5. Loop Engineering 与阶段 Gate
 
 - Gate 1：PRD/SPEC 范围复审、语言探针与本地 AI 能力探针，结论见
-  `process/gate/2410311404-code-coach-gate-1-prd-spec.md`。
+  [Gate 1 评审](../process/gate/2410311404-code-coach-gate-1-prd-spec.md)。
 - Gate 2：DESIGN、两条 ADR、AI 输出合同红绿测试和本地独立复核，结论见
-  `process/gate/2410311404-code-coach-gate-2-design.md`。
+  [Gate 2 评审](../process/gate/2410311404-code-coach-gate-2-design.md)。
 - W3：先记录测试收集失败，再实现检测、分析、AI、安全、存储、API 和页面；
-  证据见 `evidence/2410311404-code-coach-w3-red-green.md`。
+  证据见 [W3 红绿实现记录](../evidence/2410311404-code-coach-w3-red-green.md)。
 - W3 复核：Qwen 给出“修改后通过”；接受 g++ 资源限制建议，暂不扩展超出本期
   范围的持续会话历史，证据见
-  `evidence/2410311404-code-coach-w3-implementation-review.md`。
-- Gate 3：全量检查、HTTP UAT、真实浏览器 UAT、安全扫描和交付审计，结论见
-  `process/gate/2410311404-code-coach-gate-3-delivery.md`。
+  [W3 独立实现复审](../evidence/2410311404-code-coach-w3-implementation-review.md)。
+- Gate 3：全量检查、HTTP 与浏览器主路径验证、安全扫描和交付审计，复现入口见
+  [README](../README.md)，最终结论见本报告第 6 节。
 
 ## 6. 测试与 UAT 证据
 
@@ -101,11 +108,13 @@ FastAPI 提供评审、修改比较和 Markdown 报告接口。单页 Web 界面
 
 主要证据：
 
-- `evidence/2410311404-code-coach-w4-check.txt`
-- `evidence/2410311404-code-coach-w4-uat-status.txt`
-- `evidence/2410311404-code-coach-w4-browser-uat.md`
-- `evidence/screenshots/2410311404-code-coach-w4-ui.png`
-- `process/uat/2410311404-code-coach-final-uat.md`
+- [W3 红绿实现记录](../evidence/2410311404-code-coach-w3-red-green.md)
+- [W3 独立实现复审](../evidence/2410311404-code-coach-w3-implementation-review.md)
+- [API 集成测试](../tests/integration/test_api.py)
+- [安全测试](../tests/unit/test_ai_security.py)
+- [语言评估测试](../tests/evaluation/test_language_corpus.py)
+- [全量检查脚本](../scripts/check.sh)
+- [安全扫描脚本](../scripts/security_scan.sh)
 
 ## 7. 安全与隐私
 
@@ -118,19 +127,15 @@ FastAPI 提供评审、修改比较和 Markdown 报告接口。单页 Web 界面
 ## 8. 运行、测试与演示
 
 ```bash
-cd /home/msd/msd-work/code_coach
 python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8124
-```
-
-另开 WSL 终端执行：
-
-```bash
-cd /home/msd/msd-work/code_coach
+.venv/bin/python -m pip install -r requirements.txt
 bash scripts/check.sh
-BASE_URL=http://127.0.0.1:8124 bash scripts/uat_api.sh
-bash scripts/check_w4.sh
+bash scripts/security_scan.sh
+CODE_COACH_AI_PROVIDER=mock \
+CODE_COACH_DB_PATH=data/code_coach.db \
+.venv/bin/python -m uvicorn app.main:app \
+  --host 127.0.0.1 \
+  --port 8124
 ```
 
 建议的 5 分钟演示顺序：
@@ -141,11 +146,11 @@ bash scripts/check_w4.sh
 4. 导出 Markdown 报告；
 5. 简述敏感输入阻断、模型离线降级和不保存源码。
 
-完整运行说明见 `docs/RUNBOOK.md`。
+完整运行、验证和验收步骤见 [README](../README.md)。
 
 ## 9. 角色与贡献说明
 
-项目负责人完成需求、设计、实现、测试、UAT 与交付材料，角色职责见 `roles.md`。
+项目负责人完成需求、设计、实现、测试、UAT 与交付材料，角色职责见 [roles.md](../roles.md)。
 Qwen 用于脱敏能力探针和设计复核，所有结论均由仓库命令、测试结果与文件证据约束。
 
 ## 10. 已知限制与发布条件
@@ -154,18 +159,16 @@ Qwen 用于脱敏能力探针和设计复核，所有结论均由仓库命令、
 - 规则集用于教学演示，不代替专业静态分析产品；
 - 真实模型可用性不作为确定性 Gate；
 - 当前没有公网部署或账号体系；
-- 项目运行入口为 `docs/RUNBOOK.md`；
-- 文件哈希清单用于核验交付文件完整性。
+- 项目运行入口为 [README](../README.md)；
+- 交付材料和关键证据均通过仓库相对路径互相定位。
 
 ## 11. 最终交付索引
 
-- 过程索引：`PROCESS.md`
-- 运行手册：`docs/RUNBOOK.md`
-- 最终 UAT：`process/uat/2410311404-code-coach-final-uat.md`
-- Gate 3：`process/gate/2410311404-code-coach-gate-3-delivery.md`
-- 第 1 次周志：`submissions/2410311404-code-coach-weekly-1.md`
-- 第 2 次周志：`submissions/2410311404-code-coach-weekly-2.md`
-- 答辩 PPT：`submissions/2410311404-code-coach-defense.pptx`
-- 文件哈希清单：`evidence/2410311404-code-coach-w4-file-manifest.txt`
-
-本报告与文件哈希清单共同构成完整交付说明。
+- 总入口：[README](../README.md)
+- 第 1 次周志：[submissions/2410311404-code-coach-weekly-1.md](2410311404-code-coach-weekly-1.md)
+- 第 2 次周志：[submissions/2410311404-code-coach-weekly-2.md](2410311404-code-coach-weekly-2.md)
+- 答辩 PPT：[submissions/2410311404-code-coach-defense.pptx](2410311404-code-coach-defense.pptx)
+- Gate 1：[process/gate/2410311404-code-coach-gate-1-prd-spec.md](../process/gate/2410311404-code-coach-gate-1-prd-spec.md)
+- Gate 2：[process/gate/2410311404-code-coach-gate-2-design.md](../process/gate/2410311404-code-coach-gate-2-design.md)
+- W3 红绿记录：[evidence/2410311404-code-coach-w3-red-green.md](../evidence/2410311404-code-coach-w3-red-green.md)
+- W3 复审：[evidence/2410311404-code-coach-w3-implementation-review.md](../evidence/2410311404-code-coach-w3-implementation-review.md)
